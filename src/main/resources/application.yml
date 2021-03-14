@@ -1,5 +1,5 @@
 server:
   port: 9091
 
-jwt:
-  secret: jWtSpRiNgBoOtExAmPlE
+jwtdemo:
+  secretKey: jWtSpRiNgBoOtExAmPlE
