@@ -6,6 +6,7 @@ import com.springboot.jwt.model.JWTResponse;
 import com.springboot.jwt.repository.UserRepository;
 import com.springboot.jwt.service.UserService;
 import com.springboot.jwt.utility.JWTUtility;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -33,6 +35,7 @@ public class UserController {
 
     @PostMapping("/add-user")
     public UserEntity createUser(@RequestBody UserEntity userEntity) {
+        log.info("Saving the new user with user name : " + userEntity.getUserName());
         return userRepository.save(userEntity);
     }
 
@@ -43,7 +46,6 @@ public class UserController {
 
     @PostMapping("/authenticate")
     public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
-
         try {
             authenticationManager.authenticate
                     (new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
