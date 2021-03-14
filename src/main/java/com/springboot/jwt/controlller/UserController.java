@@ -1,7 +1,9 @@
 package com.springboot.jwt.controlller;
 
+import com.springboot.jwt.entity.UserEntity;
 import com.springboot.jwt.model.JWTRequest;
 import com.springboot.jwt.model.JWTResponse;
+import com.springboot.jwt.repository.UserRepository;
 import com.springboot.jwt.service.UserService;
 import com.springboot.jwt.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @PostMapping("/add-user")
+    public UserEntity createUser(@RequestBody UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
 
     @GetMapping("/restricted-access-rest-endpoint")
     public String restrictedAccessEndpoint() {
