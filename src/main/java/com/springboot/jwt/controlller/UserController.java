@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,14 +48,15 @@ public class UserController {
 
     @GetMapping("/restricted-access-rest-endpoint")
     public String restrictedAccessEndpoint() {
-        return "Welcome to the demo of JWT with Spring Boot!!!!";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return "Welcome to the demo of JWT with Spring Boot!!!! - " + authentication.getName();
     }
 
     @PostMapping("/authenticate")
     public JWTResponse authenticate(@RequestBody JWTRequest jwtRequest) throws Exception {
         try {
-            authenticationManager.authenticate
-                    (new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getUserName(), jwtRequest.getPassword()));
 
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
